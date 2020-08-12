@@ -4,3 +4,12 @@
 document.addEventListener("DOMContentLoaded", function(e){
 
 });
+
+function redirectOnSubmit(evt){
+    evt.preventDefault();
+    sessionStorage.setItem('logged', 'true');
+    window.location.href="index.html";
+    return true;
+}
+
+document.getElementById("formLogin").addEventListener("submit", redirectOnSubmit);

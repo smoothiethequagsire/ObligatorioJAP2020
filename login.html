@@ -39,11 +39,24 @@
 
 <body class="text-center">
   <div class="container p-5">
+    <img src="img/login.png" alt="login logo" id="imagenLogin">
     <div class="alert alert-danger" role="alert" style="position: relative; width:auto; top: 0;">
-      <h4 class="alert-heading">¡A trabajar! :)</h4>
-      <p>Esta sección corresponde a: Entrega 1 (Fecha de entrega: 16/08/2020) -> Punto 3 y 4.</p>
+      <h4 class="alert-heading">Login</h4>
+      <p>Es necesario que ingrese a su cuenta para continuar.</p>
       <hr>
-      <p class="mb-0">Para saber qué debes hacer, fijate en la actividad en CREA correspondiente a esta entrega.</p>
+      <form action="" method="POST" id="formLogin">
+        <fieldset name="username">
+          <label for="username">Nombre de usuario:</legend>
+          <input type="text" name="nombre-usuario" id="username" placeholder="username" required>
+        </fieldset>
+        <fieldset name="password">
+          <label for="contrasena">Contraseña:</label>
+          <input type="password" name="contrasena" id="contrasena" placeholder="password" required>
+        </fieldset>
+        <fieldset>
+          <input type="submit" value="Ingresar">
+        </fieldset>
+    </form>
     </div>
   </div>
 
