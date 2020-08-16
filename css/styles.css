@@ -140,6 +140,45 @@ a.custom-card:hover {
   color: orange;
 }
 
-#imagenLogin {
-  width: fit-content;
+.productInfo {
+  margin-bottom: 5px;
+  border: solid rgb(185, 184, 184, 0.6) 1px;
+  border-radius: 10px;
+  padding: 15px;
+  height: 200px;
+
 }
+
+.product-img {
+  width: 200px;
+  border-radius: 15px;
+  float: left;
+  margin: 10px 15px 20px 0px;
+  
+}
+
+.productInfo:hover {
+  background-color: rgb(212, 59, 88);
+  color: #fff;
+}
+
+.product-name {
+  text-align: center;
+  font-weight: bold;
+  font-size: 30px;
+}
+
+.product-cost {
+  font-style: italic;
+  font-size: 20px;
+}
+
+.product-description {
+  text-align: left;
+}
+
+.product-sold-count {
+  text-align: right;
+  font-size: 12px;
+}
+
