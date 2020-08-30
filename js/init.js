@@ -44,9 +44,22 @@ if (!location.href.endsWith('login.html') && !(sessionStorage.getItem('logged') 
   window.location.href="login.html";
 }
 
+var username = localStorage.getItem('username');
+var yourProfile = 'Tu perfil: '
+const NAVBAR = document.querySelector('nav.site-header > div');
 
+function createProfile (profile){
+  let a= document.createElement('a');
+  a.setAttribute("class", "py-2 d-none d-md-inline-block");
+  a.setAttribute("href", "my-profile.html");
+  a.textContent = yourProfile + profile;
+  return a;
+}
+
+NAVBAR.appendChild(createProfile(username));
 //Función que se ejecuta una vez que se haya lanzado el evento de
 //que el documento se encuentra cargado, es decir, se encuentran todos los
 //elementos HTML presentes.
 document.addEventListener("DOMContentLoaded", function(e){
 });
+

@@ -5,9 +5,13 @@ document.addEventListener("DOMContentLoaded", function(e){
 
 });
 
+let userName = document.getElementById('username');
+
+
 function redirectOnSubmit(evt){
     evt.preventDefault();
     sessionStorage.setItem('logged', 'true');
+    localStorage.setItem('username', userName.value);
     window.location.href="index.html";
     return true;
 }
