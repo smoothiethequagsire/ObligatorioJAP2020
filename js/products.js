@@ -18,9 +18,9 @@ function showItAll() {
     });
 };
 
-function compareAtoZ(a, b) {
-    var name1 = a.name;
-    var name2 = b.name;
+function compareMinToMax(a, b) {
+    var name1 = a.cost;
+    var name2 = b.cost;
 
     if (name1 > name2) {
         return 1;
@@ -33,9 +33,9 @@ function compareAtoZ(a, b) {
     }
 };
 
-function compareZtoA(a, b) {
-    var name1 = a.name;
-    var name2 = b.name;
+function compareMaxtoMin(a, b) {
+    var name1 = a.cost;
+    var name2 = b.cost;
 
     if (name1 < name2) {
         return 1;
@@ -86,13 +86,13 @@ function priceRangeData(url) {
     });
 };
 
-// función que ordena A-Z
-function orderAtoZ() {
+// función que ordena Min to max $
+function orderMinToMax() {
     fetch(PRODUCTS_URL).then(function (response) {
         return response.json();
     })
         .then(function (myJson){
-        var orderedArray = myJson.sort(compareAtoZ);
+        var orderedArray = myJson.sort(compareMinToMax);
         var contentToAppend = "";
         for (let i = 0; i < orderedArray.length; i++) {
             let element = orderedArray[i];
@@ -107,13 +107,13 @@ function orderAtoZ() {
     });
 }
 
-// función que ordena Z-A
-function orderZtoA() {
+// función que ordena Máx to Mín $
+function orderMaxToMin() {
     fetch(PRODUCTS_URL).then(function (response) {
         return response.json();
     })
         .then(function (myJson){
-        var orderedArray = myJson.sort(compareZtoA);
+        var orderedArray = myJson.sort(compareMaxtoMin);
         var contentToAppend = "";
         for (let i = 0; i < orderedArray.length; i++) {
             let element = orderedArray[i];
@@ -158,15 +158,15 @@ document.addEventListener("DOMContentLoaded", function (e) {
         return true;
     });
 
-    // A to Z
-    document.getElementById("sortAsc").addEventListener("click", orderAtoZ);
+    // Min to Max
+    document.getElementById("sortAsc").addEventListener("click", orderMinToMax);
 
     // Z to A
-    document.getElementById("sortDesc").addEventListener("click", orderZtoA);
+    document.getElementById("sortDesc").addEventListener("click", orderMaxToMin);
 
     // orden por relevancia
     document.getElementById("sortByCount").addEventListener("click", orderByRelevance);
 
     //funcionalidad del botón "limpiar"
-    document.getElementById("clearRangeFilter").addEventListener("click", orderAtoZ);
+    document.getElementById("clearRangeFilter").addEventListener("click", showItAll);
 });
