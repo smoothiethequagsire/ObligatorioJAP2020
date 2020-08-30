@@ -18,6 +18,51 @@ function showItAll() {
     });
 };
 
+function compareAtoZ(a, b) {
+    var name1 = a.name;
+    var name2 = b.name;
+
+    if (name1 > name2) {
+        return 1;
+    }
+    if (name1 < name2) {
+        return -1;
+    }
+    else {
+        return 0;
+    }
+};
+
+function compareZtoA(a, b) {
+    var name1 = a.name;
+    var name2 = b.name;
+
+    if (name1 < name2) {
+        return 1;
+    }
+    if (name1 > name2) {
+        return -1;
+    }
+    else {
+        return 0;
+    }
+};
+
+function compareSoldCount (a, b){
+    var sold1 = a.soldCount;
+    var sold2 = b.soldCount;
+
+    if (sold1 > sold2){
+        return -1;
+    }
+    if (sold1 < sold2){
+        return 1;
+    }
+    else{
+        return 0;
+    };
+};
+
 //definición de función que fintra según rango de precio
 function priceRangeData(url) {
     getJSONData(url).then(function (array) {
@@ -41,6 +86,68 @@ function priceRangeData(url) {
     });
 };
 
+// función que ordena A-Z
+function orderAtoZ() {
+    fetch(PRODUCTS_URL).then(function (response) {
+        return response.json();
+    })
+        .then(function (myJson){
+        var orderedArray = myJson.sort(compareAtoZ);
+        var contentToAppend = "";
+        for (let i = 0; i < orderedArray.length; i++) {
+            let element = orderedArray[i];
+            contentToAppend += `<div class='productInfo'><img src='` + element.imgSrc + `' class="product-img">
+        <p class='product-name'>`+ element.name + `</p>
+        <p class='product-cost'>`+ element.cost + ` ` + element.currency + `</p>
+        <p class='product-description'>"` + element.description + `"</p>
+        <p class='product-sold-count'>Vendidos: `+ element.soldCount + `</p>
+        </div>`;
+            document.getElementById('product-container').innerHTML = contentToAppend;
+        };
+    });
+}
+
+// función que ordena Z-A
+function orderZtoA() {
+    fetch(PRODUCTS_URL).then(function (response) {
+        return response.json();
+    })
+        .then(function (myJson){
+        var orderedArray = myJson.sort(compareZtoA);
+        var contentToAppend = "";
+        for (let i = 0; i < orderedArray.length; i++) {
+            let element = orderedArray[i];
+            contentToAppend += `<div class='productInfo'><img src='` + element.imgSrc + `' class="product-img">
+        <p class='product-name'>`+ element.name + `</p>
+        <p class='product-cost'>`+ element.cost + ` ` + element.currency + `</p>
+        <p class='product-description'>"` + element.description + `"</p>
+        <p class='product-sold-count'>Vendidos: `+ element.soldCount + `</p>
+        </div>`;
+            document.getElementById('product-container').innerHTML = contentToAppend;
+        };
+    });
+}
+
+function orderByRelevance() {
+    fetch(PRODUCTS_URL).then(function (response) {
+        return response.json();
+    })
+        .then(function (myJson){
+        var orderedArray = myJson.sort(compareSoldCount);
+        var contentToAppend = "";
+        for (let i = 0; i < orderedArray.length; i++) {
+            let element = orderedArray[i];
+            contentToAppend += `<div class='productInfo'><img src='` + element.imgSrc + `' class="product-img">
+        <p class='product-name'>`+ element.name + `</p>
+        <p class='product-cost'>`+ element.cost + ` ` + element.currency + `</p>
+        <p class='product-description'>"` + element.description + `"</p>
+        <p class='product-sold-count'>Vendidos: `+ element.soldCount + `</p>
+        </div>`;
+            document.getElementById('product-container').innerHTML = contentToAppend;
+        };
+    });
+}
+
 document.addEventListener("DOMContentLoaded", function (e) {
     showItAll(); //ejecutamos la función que obtiene los datos del json y los publica
 
@@ -51,7 +158,15 @@ document.addEventListener("DOMContentLoaded", function (e) {
         return true;
     });
 
-    //funcionalidad del botón "limpiar"
-    document.getElementById("clearRangeFilter").addEventListener("click", showItAll);
-});
+    // A to Z
+    document.getElementById("sortAsc").addEventListener("click", orderAtoZ);
 
+    // Z to A
+    document.getElementById("sortDesc").addEventListener("click", orderZtoA);
+
+    // orden por relevancia
+    document.getElementById("sortByCount").addEventListener("click", orderByRelevance);
+
+    //funcionalidad del botón "limpiar"
+    document.getElementById("clearRangeFilter").addEventListener("click", orderAtoZ);
+});
