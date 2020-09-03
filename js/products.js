@@ -1,172 +1,157 @@
-var userMin = document.getElementById("minPrice")
-var userMax = document.getElementById("maxPrice")
+const MINTOMAX = "minToMax";
+const MAXTOMIN = "MaxToMin";
+const BYSOLDCOUNT = "most relevant";
+var userMin = undefined;
+var userMax = undefined;
+var currentCriteria = undefined;
+var wholeArray = [];
 
-// función que obtiene los productos y los añade al HTML
-function showItAll() {
-    getJSONData(PRODUCTS_URL).then(function (array) {
-        var contentToAppend = "";
-        for (let i = 0; i < array.data.length; i++) {
-            let element = array.data[i];
-            contentToAppend += `<div class='productInfo'><img src='` + element.imgSrc + `' class="product-img">
-        <p class='product-name'>`+ element.name + `</p>
-        <p class='product-cost'>`+ element.cost + ` ` + element.currency + `</p>
-        <p class='product-description'>"` + element.description + `"</p>
-        <p class='product-sold-count'>Vendidos: `+ element.soldCount + `</p>
-        </div>`;
-            document.getElementById('product-container').innerHTML = contentToAppend;
-        };
-    });
-};
-
-function compareMinToMax(a, b) {
-    var name1 = a.cost;
-    var name2 = b.cost;
-
-    if (name1 > name2) {
-        return 1;
-    }
-    if (name1 < name2) {
-        return -1;
-    }
-    else {
-        return 0;
-    }
-};
-
-function compareMaxtoMin(a, b) {
-    var name1 = a.cost;
-    var name2 = b.cost;
-
-    if (name1 < name2) {
-        return 1;
-    }
-    if (name1 > name2) {
-        return -1;
-    }
-    else {
-        return 0;
-    }
-};
-
-function compareSoldCount (a, b){
-    var sold1 = a.soldCount;
-    var sold2 = b.soldCount;
-
-    if (sold1 > sold2){
-        return -1;
-    }
-    if (sold1 < sold2){
-        return 1;
-    }
-    else{
-        return 0;
+function sortArray(criteria, array) {
+    let result = []
+    if (criteria === undefined || criteria === MINTOMAX) {
+        result = array.sort(function (a, b) {
+            if (a.cost > b.cost) { return 1 }
+            if (a.cost < b.cost) { return -1 }
+            return 0;
+        });
+    } else if (criteria === MAXTOMIN) {
+        result = array.sort(function (a, b) {
+            if (a.cost < b.cost) { return 1 }
+            if (a.cost > b.cost) { return -1 }
+            return 0;
+        });
+    } else if (criteria === BYSOLDCOUNT) {
+        result = array.sort(function (a, b) {
+            if (a.soldCount < b.soldCount) { return 1 }
+            if (a.soldCount > b.soldCount) { return -1 }
+            return 0;
+        });
     };
+    return result;
+};
+// función que obtiene todos los productos (filtrados ya por precios) y los añade al HTML.
+function showItAll() {
+    let contentToAppend = "";
+    for (let i = 0; i < wholeArray.length; i++) {
+        let element = wholeArray[i];
+        if
+        (((userMin == undefined) || element.cost >= parseInt(userMin)) &&
+        ((userMax == undefined) || element.cost <= parseInt(userMax))){
+            contentToAppend += `<a class="sameStyling" href="product-info.html"><div class='productInfo'><img src='` + element.imgSrc + `' class="product-img">
+            <p class='product-name'>`+ element.name + `</p>
+            <p class='product-cost'>`+ element.cost + ` ` + element.currency + `</p>
+            <p class='product-description'>"` + element.description + `"</p>
+            <p class='product-sold-count'>Vendidos: `+ element.soldCount + `</p>
+            </div></a>`;
+        };
+    };
+    document.getElementById('product-container').innerHTML = contentToAppend;
 };
 
-//definición de función que fintra según rango de precio
-function priceRangeData(url) {
-    getJSONData(url).then(function (array) {
-        var filteredContentByPrice = ""
-        for (let elem of array.data) {
-            if (elem.cost >= userMin.value && elem.cost <= userMax.value) {
-                filteredContentByPrice += `<div class='productInfo'><img src='` + elem.imgSrc + `' class="product-img">
-                <p class='product-name'>`+ elem.name + `</p>
-                <p class='product-cost'>`+ elem.cost + ` ` + elem.currency + `</p>
-                <p class='product-description'>"` + elem.description + `"</p>
-                <p class='product-sold-count'>Vendidos: `+ elem.soldCount + `</p>
-                </div>`;
-            };
-        };
-        if (filteredContentByPrice == "") {
-            document.getElementById('product-container').innerHTML = `<p class="lead">No existen elementos que cumplan con el criterio seleccionado.</p>`
-        } else {
-            document.getElementById('product-container').innerHTML = `<p class="lead">Rango seleccionado:</p>
-            <p class="lead">-Entre <strong>`+ userMin.value + `</strong> USD y <strong>` + userMax.value + `</strong> USD-</p>` + filteredContentByPrice
-        };
-    });
+//función que adjudica currentCriterias y un CurrentArray
+function sortAndShowAll (criteria, array){
+    currentCriteria = criteria;
+
+    if (array == undefined){
+        array = wholeArray;
+    }
+    wholeArray = sortArray(currentCriteria, array);
+
+    showItAll();
 };
 
-// función que ordena Min to max $
-function orderMinToMax() {
-    fetch(PRODUCTS_URL).then(function (response) {
-        return response.json();
-    })
-        .then(function (myJson){
-        var orderedArray = myJson.sort(compareMinToMax);
-        var contentToAppend = "";
-        for (let i = 0; i < orderedArray.length; i++) {
-            let element = orderedArray[i];
-            contentToAppend += `<div class='productInfo'><img src='` + element.imgSrc + `' class="product-img">
-        <p class='product-name'>`+ element.name + `</p>
-        <p class='product-cost'>`+ element.cost + ` ` + element.currency + `</p>
-        <p class='product-description'>"` + element.description + `"</p>
-        <p class='product-sold-count'>Vendidos: `+ element.soldCount + `</p>
-        </div>`;
-            document.getElementById('product-container').innerHTML = contentToAppend;
+
+document.addEventListener("DOMContentLoaded", function(e){
+    getJSONData(PRODUCTS_URL).then(function (returnedArray){
+        sortAndShowAll (MINTOMAX, returnedArray.data);
+    });
+
+    document.getElementById("sortAsc").addEventListener("click", function(){
+        sortAndShowAll(MINTOMAX);
+    });
+
+    document.getElementById("sortDesc").addEventListener("click", function(){
+        sortAndShowAll(MAXTOMIN);
+    });
+
+    document.getElementById("sortByCount").addEventListener("click", function(){
+        sortAndShowAll(BYSOLDCOUNT);
+    });
+
+    document.getElementById("filtrar").addEventListener("click", function(){
+        userMin = document.getElementById("minPrice").value;
+        userMax = document.getElementById("maxPrice").value;
+
+        if ((userMin != undefined) && (userMin != "")){
+            userMin = parseInt(userMin);
+        }else{
+            userMin = undefined;
         };
-    });
-}
 
-// función que ordena Máx to Mín $
-function orderMaxToMin() {
-    fetch(PRODUCTS_URL).then(function (response) {
-        return response.json();
+        if((userMax != undefined) && (userMax != "")){
+            userMax = parseInt(userMax);
+        }else{
+            userMax= undefined;
+        }
+
+        showItAll();
+    });
+
+    document.getElementById("clearRangeFilter").addEventListener("click", function(){
+        userMin = undefined;
+        userMax = undefined;
+        document.getElementById("minPrice").value = "";
+        document.getElementById("maxPrice").value = "";
+
+        showItAll();
     })
-        .then(function (myJson){
-        var orderedArray = myJson.sort(compareMaxtoMin);
-        var contentToAppend = "";
-        for (let i = 0; i < orderedArray.length; i++) {
-            let element = orderedArray[i];
-            contentToAppend += `<div class='productInfo'><img src='` + element.imgSrc + `' class="product-img">
-        <p class='product-name'>`+ element.name + `</p>
-        <p class='product-cost'>`+ element.cost + ` ` + element.currency + `</p>
-        <p class='product-description'>"` + element.description + `"</p>
-        <p class='product-sold-count'>Vendidos: `+ element.soldCount + `</p>
-        </div>`;
-            document.getElementById('product-container').innerHTML = contentToAppend;
-        };
-    });
-}
-
-function orderByRelevance() {
-    fetch(PRODUCTS_URL).then(function (response) {
-        return response.json();
-    })
-        .then(function (myJson){
-        var orderedArray = myJson.sort(compareSoldCount);
-        var contentToAppend = "";
-        for (let i = 0; i < orderedArray.length; i++) {
-            let element = orderedArray[i];
-            contentToAppend += `<div class='productInfo'><img src='` + element.imgSrc + `' class="product-img">
-        <p class='product-name'>`+ element.name + `</p>
-        <p class='product-cost'>`+ element.cost + ` ` + element.currency + `</p>
-        <p class='product-description'>"` + element.description + `"</p>
-        <p class='product-sold-count'>Vendidos: `+ element.soldCount + `</p>
-        </div>`;
-            document.getElementById('product-container').innerHTML = contentToAppend;
-        };
-    });
-}
-
-document.addEventListener("DOMContentLoaded", function (e) {
-    showItAll(); //ejecutamos la función que obtiene los datos del json y los publica
-
-    //Filtrado por rango de precio:
-    document.getElementById("priceRange").addEventListener("submit", function (evt) {
-        evt.preventDefault();
-        priceRangeData(PRODUCTS_URL);
-        return true;
-    });
-
-    // Min to Max
-    document.getElementById("sortAsc").addEventListener("click", orderMinToMax);
-
-    // Z to A
-    document.getElementById("sortDesc").addEventListener("click", orderMaxToMin);
-
-    // orden por relevancia
-    document.getElementById("sortByCount").addEventListener("click", orderByRelevance);
-
-    //funcionalidad del botón "limpiar"
-    document.getElementById("clearRangeFilter").addEventListener("click", showItAll);
 });
+
+// function orderByRelevance() {
+//     fetch(PRODUCTS_URL).then(function (response) {
+//         return response.json();
+//     })
+//         .then(function (myJson) {
+//             var orderedArray = myJson.sort(compareSoldCount);
+//             var contentToAppend = "";
+//             for (let i = 0; i < orderedArray.length; i++) {
+//                 let element = orderedArray[i];
+//                 contentToAppend += `<div class='productInfo'><img src='` + element.imgSrc + `' class="product-img">
+//         <p class='product-name'>`+ element.name + `</p>
+//         <p class='product-cost'>`+ element.cost + ` ` + element.currency + `</p>
+//         <p class='product-description'>"` + element.description + `"</p>
+//         <p class='product-sold-count'>Vendidos: `+ element.soldCount + `</p>
+//         </div>`;
+//                 document.getElementById('product-container').innerHTML = contentToAppend;
+//             };
+//         });
+// }
+
+// document.addEventListener("DOMContentLoaded", function (e) {
+//     showItAll(); //ejecutamos la función que obtiene los datos del json y los publica
+
+//     //Filtrado por rango de precio:
+//     document.getElementById("priceRange").addEventListener("submit", function (evt) {
+//         evt.preventDefault();
+//         priceRangeData(PRODUCTS_URL);
+//         return true;
+//     });
+
+//     // Min to Max
+//     document.getElementById("sortAsc").addEventListener("click", function () {
+//         currentCriteria = MINTOMAX;
+//         sortArray(currentCriteria, wholeArray)
+//     });
+
+//     // Z to A
+//     document.getElementById("sortDesc").addEventListener("click", function () {
+//         currentCriteria = MAXTOMIN;
+//     });
+
+//     // orden por relevancia
+//     document.getElementById("sortByCount").addEventListener("click", orderByRelevance);
+
+//     //funcionalidad del botón "limpiar"
+//     document.getElementById("clearRangeFilter").addEventListener("click", showItAll);
+// });
+

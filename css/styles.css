@@ -140,24 +140,50 @@ a.custom-card:hover {
   color: orange;
 }
 
+.color-scheme-buttons{
+  font-family: inherit;
+  border: solid rgb(185, 184, 184, 0.6) 1px;
+  background-color: rgb(212, 59, 88);
+  color: #fff;
+  border-radius: 5px;
+}
+
+.color-scheme-buttons:hover{
+  background-color: rgb(173, 46, 70);
+  box-shadow: 0px 0px 1px 1px rgb(185, 184, 184, 0.6);
+}
+
+
 .productInfo {
+  position: relative;
+  box-sizing: content-box;
   margin-bottom: 5px;
   border: solid rgb(185, 184, 184, 0.6) 1px;
   border-radius: 10px;
   padding: 15px;
-  height: 200px;
+}
 
+.priceRangeContainer{
+  width: 50%;
+}
+
+a.sameStyling{
+  color: #212529;
+}
+a.sameStyling:hover {
+  color: #fff;
+  text-decoration: none;
 }
 
 .product-img {
   width: 200px;
   border-radius: 15px;
   float: left;
-  margin: 10px 15px 20px 0px;
+  margin: auto 15px auto 0px;
   
 }
 
-.productInfo:hover {
+div.productInfo:hover{
   background-color: rgb(212, 59, 88);
   color: #fff;
 }
@@ -178,11 +204,9 @@ a.custom-card:hover {
 }
 
 .product-sold-count {
+  position: absolute;
+  right: 10px;
+  bottom: 0;
   text-align: right;
   font-size: 12px;
-}
-
-.priceRangeContainer{
-  width: 50%;
-
 }
