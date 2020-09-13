@@ -196,7 +196,9 @@ div.productInfo:hover{
 
 .product-cost {
   font-style: italic;
+  font-weight: bold;
   font-size: 20px;
+  margin-bottom: 5px;
 }
 
 .product-description {
@@ -209,4 +211,113 @@ div.productInfo:hover{
   bottom: 0;
   text-align: right;
   font-size: 12px;
+}
+
+/* product info page */
+#product-info-page{
+  position: relative;
+  margin-top: 20px;
+  box-sizing: content-box;
+  margin-bottom: 5px;
+  border: solid rgb(185, 184, 184, 0.6) 1px;
+  border-radius: 10px;
+  padding: 15px;
+}
+
+.main-img-info{
+  width: 25%;
+}
+
+.soldcount{
+  font-size: 12px;
+  font-style: italic;
+}
+
+.dollar-green{
+  color: rgb(14, 109, 14);
+}
+
+.buy-me {
+  position: relative;
+  left: -10px;
+  text-transform: uppercase;
+  font-weight: bold;
+  padding: 10px;
+  margin-left: 0;
+}
+
+.product-description{
+  font-size: 14px;
+}
+
+.second-img{
+  float: none;
+  width: 20%;
+  margin: 5px 5px 5px 20px;
+}
+
+.second-img:hover{
+  border: 4px solid rgb(212, 59, 88);
+  box-shadow: 3px 3px 5px rgb(95, 95, 95);
+  width: 300px;
+}
+
+.product-category{
+  font-size: 14px;
+  position: relative;
+  margin-top: 20px;
+  margin-bottom: 0;
+  text-align: center;
+}
+
+/* Comment section*/
+.user-comment{
+  box-sizing: content-box;
+  border: solid rgb(185, 184, 184, 0.6) 1px;
+  border-radius: 10px;
+  padding: 15px;
+  font-size: 0.8em;
+  margin-bottom: 10px;
+  line-height: 1px;
+}
+
+.prod-coment{
+  margin: 20px 0 20px 0;
+}
+
+.coment{
+  font-size: 16px;
+  line-height: normal;
+}
+
+#new-comment {
+  border: solid rgb(185, 184, 184, 0.6) 1px;
+  border-radius: 10px;
+}
+
+/*Related products section */
+.relat-prod-container{
+  position: relative;
+  margin-top: 10px;
+  margin-bottom: 5px;
+  border: solid rgb(185, 184, 184, 0.6) 1px;
+  border-radius: 10px;
+  padding: 15px;
+  width: 45%;
+}
+
+.related-product-img{
+  width: 35%;
+  border-radius: 15px;
+  float: left;
+  margin-right: 10px;
+}
+
+.related-product-name{
+  font-weight: bold;
+  font-size: 25px;
+}
+
+.related-product-cost{
+  font-style: italic;
 }
