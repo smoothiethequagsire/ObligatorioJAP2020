@@ -5,19 +5,59 @@ var newScore = undefined;
 var star = `<span class="fa fa-star checked"></span>`
 var emptyStar = `<span class="fa fa-star"></span>`
 
+// Función que crea el carousel para las imágenes del producto
+function createCarousel(array) {
+    let appendCarousel = ` <div id="car-images-carousel" class="carousel slide" data-ride="carousel">
+    <ol class="carousel-indicators">`;
+
+    for (let i=0; i<array.length; i++) {
+        if (i == 0) {
+            appendCarousel += `<li data-target="#car-images-carousel" 
+            data-slide-to="`+i+`" class="active"></li>`;
+        } else {
+            appendCarousel += `<li data-target="#car-images-carousel" 
+            data-slide-to="`+i+`"></li>`
+        }
+    }
+
+    appendCarousel += `</ol>
+    <div class="carousel-inner">`;
+
+    for (let i=0; i<array.length; i++){
+        if (i==0){
+            appendCarousel+= `<div class="carousel-item active">
+            <img src="`+ array[i] + `" class="d-block w-100 carousel-img">
+          </div>`
+        } else {
+            appendCarousel+= `<div class="carousel-item">
+            <img src="`+array[i]+`" class="d-block w-100 carousel-img">
+          </div>`
+        }
+    }
+
+    appendCarousel += `</div>
+    <a class="carousel-control-prev" href="#car-images-carousel" role="button" data-slide="prev">
+    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+    <span class="sr-only">Previous</span>
+    </a>
+    <a class="carousel-control-next" href="#car-images-carousel" role="button" data-slide="next">
+    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+    <span class="sr-only">Next</span>
+    </a>
+    </div>`;
+
+    return appendCarousel;
+}
+
 // función que muestra info del producto
 function showProductInfo() {
-    var appendContent = `<div id="product-info-page" class="col-lg-12"><h2 class="product-name">` + decodedURIName + `</h2>
+    var appendContent = `<div id="product-info-page" class="col-lg-12"><h2 class="product-name">` + decodedURIName.split("=")[1] + `</h2>
     <img src='` + productInfo.images[0] + `' class="product-img main-img-info">
     <p class="product-cost dollar-green">`+ productInfo.cost + " " + productInfo.currency + `</p>´
     <button class="buy-me color-scheme-buttons">Comprar</button>
     <p class="soldcount">Vendidos: `+ productInfo.soldCount + `
-    <p class="product-description clear-both">` + productInfo.description + `</p>
-    <div class="container img-container">
-    <img src="`+ productInfo.images[1] + `" class="product-img second-img">
-    <img src="`+ productInfo.images[2] + `" class="product-img second-img">
-    <img src="`+ productInfo.images[3] + `" class="product-img second-img">
-    <img src="`+ productInfo.images[4] + `" class="product-img second-img"></div>
+    <p class="product-description clear-both">` + productInfo.description + `</p><hr />
+    <div class="container img-container">`+ createCarousel(productInfo.images) +`</div>
     <p class="product-category">Categoría: <a href="category-info.html">`+ productInfo.category + `</a></p>
 
     </div>`;
@@ -110,9 +150,9 @@ document.addEventListener("DOMContentLoaded", function (e) {
 
                 if (i < relatedProd.length) {
                     appendRelatedProducts += `<div class="container relat-prod-container productInfo lg-col-6">
-                <a href="product-info.html?`+encodeURIComponent(element.name)+`">
+                <a href="product-info.html?product=`+ encodeURIComponent(element.name) + `">
                 <img src="`+ element.imgSrc + `" class="related-product-img"></a>
-                <p class="related-product-name">` + element.name +`</p>
+                <p class="related-product-name">` + element.name + `</p>
                 <p class="related-product-cost">`+ element.cost + ` ` + element.currency + `</p>
                
                 </div>`
@@ -121,7 +161,7 @@ document.addEventListener("DOMContentLoaded", function (e) {
 
             document.querySelector("#inserted-Js").innerHTML += `<div id="related-section" class="container">
             <h3 class="product-name prod-coment">Productos relacionados:</h3><div class="row">`
-            + appendRelatedProducts + `</div></div>`;
+                + appendRelatedProducts + `</div></div>`;
 
             //carga comentarios
             getJSONData(PRODUCT_INFO_COMMENTS_URL).then(function (myJson) {

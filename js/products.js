@@ -38,7 +38,7 @@ function showItAll() {
         if
         (((userMin == undefined) || element.cost >= parseInt(userMin)) &&
         ((userMax == undefined) || element.cost <= parseInt(userMax))){
-            contentToAppend += `<a class="sameStyling" href="product-info.html?`+uriName+`"><div class='productInfo'><img src='` + element.imgSrc + `' class="product-img">
+            contentToAppend += `<a class="sameStyling" href="product-info.html?product=`+uriName+`"><div class='productInfo'><img src='` + element.imgSrc + `' class="product-img">
             <p class='product-name'>`+ element.name + `</p>
             <p class='product-cost'>`+ element.cost + ` ` + element.currency + `</p>
             <p class='product-description'>"` + element.description + `"</p>
@@ -46,7 +46,7 @@ function showItAll() {
             </div></a>`;
         };
     };
-    document.getElementById('product-container').innerHTML = contentToAppend;
+    document.getElementById('product-container').innerHTML = `<div class=container>` + contentToAppend + `</div>`;
 };
 
 //función que adjudica currentCriterias y un CurrentArray
@@ -60,7 +60,6 @@ function sortAndShowAll (criteria, array){
 
     showItAll();
 };
-
 
 document.addEventListener("DOMContentLoaded", function(e){
     getJSONData(PRODUCTS_URL).then(function (returnedArray){
@@ -106,6 +105,4 @@ document.addEventListener("DOMContentLoaded", function(e){
 
         showItAll();
     })
-
-
 });
