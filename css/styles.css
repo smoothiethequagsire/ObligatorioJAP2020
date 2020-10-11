@@ -237,7 +237,6 @@ a.sameStyling:hover {
   border-radius: 15px;
   float: left;
   margin: auto 15px auto 0px;
-  
 }
 
 div.productInfo:hover{
@@ -377,9 +376,44 @@ div.productInfo:hover{
 
 .related-product-name{
   font-weight: bold;
-  font-size: 25px;
+  font-size: 20px;
 }
 
 .related-product-cost{
   font-style: italic;
+}
+
+/*Cart section*/
+.cartProductInfo {
+  position: relative;
+  box-sizing: content-box;
+  margin-bottom: 5px;
+  border: solid rgb(185, 184, 184, 0.6) 1px;
+  border-radius: 10px;
+  padding: 15px;
+}
+
+.cart-product-img{
+  float: left;
+  width: 25%;
+  border-radius: 15px;
+  margin: auto 15px auto 0px;
+}
+
+.formatoTotal{
+  margin: 20px 0 20px 0;
+}
+
+.articleQuantity{
+  width: 50px;
+}
+
+.articleQuantity:hover{
+  color: rgb(212, 59, 88);
+  border-color:  rgb(212, 59, 88) ;
+}
+
+.totalArticulo, #subtotal{
+  font-weight: bold;
+  color: rgb(212, 59, 88);
 }
