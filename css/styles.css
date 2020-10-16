@@ -413,7 +413,18 @@ div.productInfo:hover{
   border-color:  rgb(212, 59, 88) ;
 }
 
-.totalArticulo, #subtotal{
+.totalArticulo, #subtotal, #totalEnvio{
+  color: rgb(212, 59, 88);
+}
+
+#total{
   font-weight: bold;
   color: rgb(212, 59, 88);
+}
+
+.quitarCarrito{
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  font-size: 12px;
 }
