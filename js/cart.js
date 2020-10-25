@@ -38,11 +38,11 @@ function showCart(array) {
     <h6 class="text-right formatoTotal">Subtotal: $ <span id="subtotal"></span> UYU</h6><hr>
     </div>
     <div class="container d-flex justify-content-center"><div class="container"><p class="envio">Seleccionar Envío: </p>
-    <input type="radio" name="shipping" id="standard" value="standard" checked required>
+    <input form="CompleteForm" type="radio" name="shipping" id="standard" value="standard" checked required>
     <label for="standard">Standard (12 a 15 días) <span class="soldcount">- 5% sobre el subtotal.</span></label></br>
-    <input type="radio" name="shipping" id="express" value="express" required>
+    <input form="CompleteForm" type="radio" name="shipping" id="express" value="express" required>
     <label for="express">Express (5 a 8 días) <span class="soldcount">- 7% sobre el subtotal.</span></label></br>
-    <input type="radio" name="shipping" id="premium" value="premium" required>
+    <input form="CompleteForm" type="radio" name="shipping" id="premium" value="premium" required>
     <label for="premium">Premium (2 a 5 días) <span class="soldcount">- 15% sobre el subtotal.</span></label></br>
     </div>
     <div class="container col-lg-5 col-xl-5">
@@ -50,7 +50,7 @@ function showCart(array) {
     <h4 class="text-right formatoTotal">TOTAL: $ <span id="total"></span> UYU</h4></div>
     </div><hr></div>`
 
-    let paymentSection = `<div class="container"><button type="button" class="btn btn-primary" data-toggle="modal" data-target="#paymentMethod">
+    let paymentSection = `<div class="container d-flex justify-content"><button type="button" class="color-scheme-buttons" data-toggle="modal" data-target="#paymentMethod">
     Seleccione forma de pago
     </button><hr>
     <div class="modal fade" id="paymentMethod" tabindex="-1" aria-labelledby="formaPago" aria-hidden="true">
@@ -63,22 +63,23 @@ function showCart(array) {
     </button>
     </div>
     <div class="modal-body">
-    <input type="radio" name="paymentMethod" id="transferencia" value="transferencia">
+    <form action="#" id="CompleteForm" method="GET">
+    <input type="radio" name="paymentMethod" id="transferencia" value="transferencia" required>
     <label for="transferencia">Transferencia bancaria</label><br>
-    <input type="radio" name="paymentMethod" id="tarjeta" value="tarjeta">
-    <label for="tarjeta">Tarjeta de crédito</label>
+    <input type="radio" name="paymentMethod" id="tarjeta" value="tarjeta" required>
+    <label for="tarjeta">Tarjeta de crédito</label><hr>
+    <div id="paymentFormSection"></div><br/>
+    </form>
     </div>
     <div class="modal-footer">
-    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
-    <button type="button" class="btn btn-primary" data-dismiss="modal">Aceptar</button>
-    </div>
+    <button type="button" class="color-scheme-buttons" data-dismiss="modal">Cancelar</button>
     </div>
     </div>
     </div>
     </div>`
 
     document.getElementById("cart-container").innerHTML = `<div class="container d-flex justify-content-center">`
-        + elementToAppend + `</div>` + shippingSection + paymentSection;
+        + elementToAppend + '</div>' + shippingSection + paymentSection;
 };
 
 document.addEventListener("DOMContentLoaded", function (e) {
@@ -98,7 +99,7 @@ document.addEventListener("DOMContentLoaded", function (e) {
             subtotal.innerHTML = sumaTotales; //mostramos subtotal inicial
 
             function calcShipping(shipping) {
-                return (parseInt(subtotal.innerHTML) * shipping)
+                return Math.round((parseInt(subtotal.innerHTML) * shipping))
             };
 
             // mostramos costo de envío inicial
@@ -113,6 +114,10 @@ document.addEventListener("DOMContentLoaded", function (e) {
 
                 cantidad.addEventListener("change", function () { //declaramos Eventlistener:
 
+                    //evitamos que el usuario escriba una cantidad de artículos igual o menor a 0
+                    if (cantidad.value <= 0) {
+                        cantidad.value = 1;
+                    }
                     //Valor por artículo:
                     if (resp.data.articles[i].currency === "USD") { // si la currency es USD, hacemos conversión
                         document.getElementById("totalArticulo" + i).innerHTML =
@@ -184,17 +189,44 @@ document.addEventListener("DOMContentLoaded", function (e) {
                     };
                 });
             };
+        })
+        .then(function () {
+            document.getElementById("transferencia").addEventListener("click", function () {
+                document.getElementById("paymentFormSection").innerHTML =
+                    `<label for="nroCuenta">Número de cuenta:</label>
+            <input type="number" id="nroCuenta" name="nroCuenta" placeholder="Nro. de cuenta" required><br>
+            <input type="submit" class="color-scheme-buttons" id="proceedToBuy" value="comprar">`
+            });
+
+            document.getElementById("tarjeta").addEventListener("click", function () {
+                document.getElementById("paymentFormSection").innerHTML =
+                    `<label for="nombreTitular">Nombre de titular:</label>
+            <input type="text" id="nombreTitular" name="nombreTitular" placeholder="Nombre de titular" required><br/>
+            <label for="nroTarjeta">Número de tarjeta:</label>
+            <input type="number" id="nroTarjeta" name="nroTarjeta" placeholder="Nro. de tarjeta" required><br/>
+            <label for="cvv">Código de seguridad:</label>
+            <input type="text" id="cvv" name="cvv" placeholder="Código de seguridad" size="5" minlength="3" maxlength="3" required><br/>
+            <label for="mes">Vencimiento:</label><br />
+            <label for="mes">Mes:</label>
+            <input type="text" id="mes" name="month" placeholder="Mes" size="6" minlength="2" maxlength="2" required>
+            <label for="year">Año:</label>
+            <input type="text" id="year" name="year" placeholder="Año" size="6" minlength="4" maxlength="4" required><br />
+            <input type="submit" class="color-scheme-buttons" id="proceedToBuy" value="comprar">`
+            });
+        })
+        .then(function () {
+            var msg = "";
+            getJSONData(CART_BUY_URL).then(function (resp) {
+                console.log(resp);
+                if (resp.status === "ok") {
+                    msg = resp.data.msg;
+                }else{
+                    msg = "Error. Inténtelo nuevamente."
+                }
+            }).then(function () {
+                document.getElementById("CompleteForm").addEventListener("submit", function (e) {
+                    alert(msg);
+                });
+            });
         });
 });
-
-/*SECCIÓN PARA CHEQUEAR QUE SE HAYA SELECCIONADO FORMA DE PAGO
-
-    document.getElementById("tarjeta").addEventListener("click", function(){
-        console.log(document.getElementById("tarjeta").checked)
-    });
-
-    document.getElementById("transferencia").addEventListener("click", function(){
-        console.log(document.getElementById("tarjeta").checked)
-    });
-
-*/

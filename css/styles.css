@@ -132,6 +132,11 @@ a.custom-card:hover {
   text-decoration: inherit;
 }
 
+input{
+  border-radius: 5px;
+  border: solid rgb(185, 184, 184, 0.6) 1px;
+}
+
 /*Alert divs*/
 .alert-danger,
 .alert{
@@ -427,4 +432,11 @@ div.productInfo:hover{
   top: 10px;
   right: 10px;
   font-size: 12px;
+}
+
+#proceedToBuy{
+  padding: 10px;
+  text-transform: uppercase;
+  font-weight: bold;
+  margin-top: 10px;
 }
