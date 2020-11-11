@@ -218,7 +218,6 @@ input{
 
 .productInfo {
   position: relative;
-  box-sizing: content-box;
   margin-bottom: 5px;
   border: solid rgb(185, 184, 184, 0.6) 1px;
   border-radius: 10px;
@@ -238,9 +237,8 @@ a.sameStyling:hover {
 }
 
 .product-img {
-  width: 200px;
+  width: 100%;
   border-radius: 15px;
-  float: left;
   margin: auto 15px auto 0px;
 }
 

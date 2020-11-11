@@ -68,7 +68,7 @@ function showCart(array) {
     <label for="transferencia">Transferencia bancaria</label><br>
     <input type="radio" name="paymentMethod" id="tarjeta" value="tarjeta" required>
     <label for="tarjeta">Tarjeta de crédito</label><hr>
-    <div id="paymentFormSection"></div><br/>
+    <div id="paymentFormSection"><p class="lead">Seleccione un método de pago.</p></div><br/>
     </form>
     </div>
     <div class="modal-footer">
@@ -217,7 +217,6 @@ document.addEventListener("DOMContentLoaded", function (e) {
         .then(function () {
             var msg = "";
             getJSONData(CART_BUY_URL).then(function (resp) {
-                console.log(resp);
                 if (resp.status === "ok") {
                     msg = resp.data.msg;
                 }else{
