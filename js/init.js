@@ -46,7 +46,7 @@ var yourProfile = 'Tu perfil: '
 const NAVBAR = document.querySelector('nav.site-header > div');
 
 function cerrarSesion() {
-  localStorage.clear(); 
+  localStorage.removeItem('username'); 
   sessionStorage.setItem('logged', 'false'); 
   window.location.href="login.html";
 }

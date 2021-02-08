@@ -137,6 +137,10 @@ input{
   border: solid rgb(185, 184, 184, 0.6) 1px;
 }
 
+.color-scheme{
+  color: rgb(212, 59, 88);
+}
+
 /*Alert divs*/
 .alert-danger,
 .alert{
@@ -160,10 +164,11 @@ input{
 }
 
 /* Login page */
-#contrasena, #username {
+.input-styling {
   border-radius: 5px;
   border: solid rgb(185, 184, 184, 0.6) 1px;
   color: rgb(212, 59, 88);
+  margin: 5px;
 }
 
 #imagenLogin{
@@ -438,3 +443,13 @@ div.productInfo:hover{
   font-weight: bold;
   margin-top: 10px;
 }
+
+/*My-profile section*/
+
+.user-data-container{
+  border: solid rgb(212, 59, 88) 1px;
+  border-radius: 10px;
+  padding: 5px;
+  margin-bottom: 10px;
+}
+
